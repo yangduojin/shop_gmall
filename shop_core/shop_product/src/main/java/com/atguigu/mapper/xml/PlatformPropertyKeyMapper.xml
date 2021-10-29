@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mapper.PlatformPropertyKeyMapper">
+
+<!--    for多次io数据库，数据库压力大。  不如多表查询 一次出结果-->
+<!--    <select id="getPlatformPropertyByCategoryId" resultType="com.atguigu.entity.PlatformPropertyKey">-->
+<!--        select * from platform_property_key a-->
+<!--        <where>-->
+<!--            <if test="category1Id!=null and category1Id!=0">-->
+<!--                or (a.category_id = #{category1Id} and category_level = 1)-->
+<!--            </if>-->
+<!--            <if test="category2Id!=null and category2Id!=0">-->
+<!--                or (a.category_id = #{category2Id} and category_level = 2)-->
+<!--            </if>-->
+<!--            <if test="category3Id!=null and category3Id!=0">-->
+<!--                or (a.category_id = #{category3Id} and category_level = 3)-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+    <resultMap id="PlatformPropertyMap" type="com.atguigu.entity.PlatformPropertyKey" autoMapping="true">
+        <id property="id" column="id"></id>
+        <collection property="propertyValueList" ofType="com.atguigu.entity.PlatformPropertyValue" autoMapping="true">
+            <id property="id" column="platform_property_value_id"></id>
+        </collection>
+    </resultMap>
+
+    <select id="getPlatformPropertyByCategoryId" resultMap="PlatformPropertyMap">
+        SELECT
+        a.id,
+        a.property_key,
+        a.category_id,
+        a.category_level,
+        b.id platform_property_value_id,
+        b.property_value,
+        b.property_key_id
+        from platform_property_key a
+        INNER JOIN platform_property_value b on a.id = b.property_key_id
+        <where>
+            <if test="category1Id!=null and category1Id!=0">
+                or (a.category_id = #{category1Id} and a.category_level = 1)
+            </if>
+            <if test="category2Id!=null and category2Id!=0">
+                or (a.category_id = #{category2Id} and a.category_level = 2)
+            </if>
+            <if test="category3Id!=null and category3Id!=0">
+                or (a.category_id = #{category3Id} and a.category_level = 3)
+            </if>
+        </where>
+    </select>
+</mapper>
