@@ -51,5 +51,11 @@ public class PlatformPropertyKeyController {
         return RetVal.ok();
     }
 
+    @GetMapping("getPlatformPropertyBySkuId/{skuId}")
+    public List<PlatformPropertyKey> getPlatformPropertyBySkuId(@PathVariable Long skuId){
+        List<PlatformPropertyKey> platformPropertyList=platformPropertyKeyService.getPlatformPropertyBySkuId(skuId);
+        return platformPropertyList;
+    }
+
 }
 

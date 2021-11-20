@@ -3,8 +3,11 @@ package com.atguigu.service.impl;
 import com.atguigu.entity.ProductImage;
 import com.atguigu.mapper.ProductImageMapper;
 import com.atguigu.service.ProductImageService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +20,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductImageServiceImpl extends ServiceImpl<ProductImageMapper, ProductImage> implements ProductImageService {
 
+    @Override
+    public List<ProductImage> queryProductImageByProductId(Long productId) {
+        QueryWrapper<ProductImage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("product_id",productId);
+        List<ProductImage> imageList = baseMapper.selectList(queryWrapper);
+        return imageList;
+    }
 }

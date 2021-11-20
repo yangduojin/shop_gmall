@@ -2,4 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.mapper.SkuSalePropertyValueMapper">
 
+    <select id="getSkuSalePropertyValueId" resultType="java.util.Map">
+        SELECT
+        b.sku_id,
+        GROUP_CONCAT(b.sale_property_value_id SEPARATOR '|') sale_property_value_id
+        FROM product_sale_property_value a
+        INNER JOIN sku_sale_property_value b
+        on a.id = b.sale_property_value_id
+        and a.product_id = b.product_id
+        where a.product_id = #{productId}
+        GROUP BY b.sku_id
+    </select>
 </mapper>

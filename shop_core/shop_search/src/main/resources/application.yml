@@ -1,0 +1,33 @@
+server:
+  port: 8001
+ipAddr: 192.168.134.11
+spring:
+  elasticsearch:
+    rest:
+      #uris: http://10.211.55.97:9200
+      uris: http://${ipAddr}:9200
+  application:
+    name: shop-search
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${ipAddr}:8848
+  rabbitmq:
+    host: ${ipAddr}
+    port: 5672
+    username: admin
+    password: 123
+    publisher-confirm-type: correlated
+  redis:
+    host: ${ipAddr}
+    port: 6389
+    database: 0
+    timeout: 1800000
+feign:
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        readTimeout: 3000
+        connectTimeout: 1000

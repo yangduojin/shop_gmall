@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021-10-29
  */
 @RestController
-@RequestMapping("/product-sale-property-key")
+@RequestMapping("/product")
 public class ProductSalePropertyKeyController {
+
 
 }
 

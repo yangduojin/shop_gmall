@@ -1,6 +1,6 @@
 server:
   port: 8000
-
+ipAddr: 192.168.134.11
 mybatis-plus:
   mapper-locations: classpath:com/atguigu/mapper/xml/*.xml
   configuration:
@@ -11,26 +11,27 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.134.11:8848
+        server-addr: ${ipAddr}:8848
   rabbitmq:
-    host: 192.168.134.11
+    host: ${ipAddr}
     port: 5672
     username: admin
     password: 123
   redis:
-    host: 192.168.134.11
+    host: ${ipAddr}
     port: 6389
     database: 0
     timeout: 1800000
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/shop_product?characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://${ipAddr}:3306/shop_product?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     #?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
     username: root
-    password: 123
+    password: root
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+
 fastdfs:
   prefix: http://192.168.134.11/

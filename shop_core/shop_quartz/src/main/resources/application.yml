@@ -1,0 +1,18 @@
+server:
+  port: 8007
+ipAddr: 192.168.134.11
+spring:
+  rabbitmq:
+    host: ${ipAddr}
+    port: 5672
+    username: admin
+    password: 123
+  redis:
+    host: ${ipAddr}
+    port: 6389
+    database: 0
+    timeout: 1800000
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${ipAddr}:8848

@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,45 +45,65 @@ public class ProductSpuServiceImpl extends ServiceImpl<ProductSpuMapper, Product
     @Override
     public IPage<ProductSpu> queryProductSpuByPage(Long pageNum, Long pageSize, Long category3Id) {
 
-        Page<ProductSpu> productSpuPage = new Page<>(pageNum,pageSize);
+        Page<ProductSpu> productSpuPage = new Page<>(pageNum, pageSize);
         QueryWrapper<ProductSpu> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("category3_id",category3Id);
+        queryWrapper.eq("category3_id", category3Id);
         IPage<ProductSpu> productSpuIPage = baseMapper.selectPage(productSpuPage, queryWrapper);
         return productSpuIPage;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveProductSpu(ProductSpu productSpu) {
 
-        if (productSpu.getId()!= null){
+        if (productSpu.getId() != null) {
             baseMapper.updateById(productSpu);
-        }else {
+        } else {
             baseMapper.insert(productSpu);
         }
 
         List<ProductSalePropertyKey> salePropertyKeyList = productSpu.getSalePropertyKeyList();
         List<ProductSalePropertyValue> productSalePropertyValues = new ArrayList<>();
-        for (ProductSalePropertyKey productSalePropertyKey : salePropertyKeyList) {
-            productSalePropertyKey.setProductId(productSpu.getId());
-            List<ProductSalePropertyValue> salePropertyValueList = productSalePropertyKey.getSalePropertyValueList();
-            for (ProductSalePropertyValue productSalePropertyValue : salePropertyValueList) {
-                productSalePropertyValue.setSalePropertyKeyName(productSalePropertyKey.getSalePropertyKeyName());
-                productSalePropertyValue.setProductId(productSpu.getId());
-                productSalePropertyValues.add(productSalePropertyValue);
-            }
+        if (!CollectionUtils.isEmpty(salePropertyKeyList)){
+            salePropertyKeyList.forEach((propertyKey) -> {
+                propertyKey.setProductId(productSpu.getId());
+
+                List<ProductSalePropertyValue> salePropertyValueList = propertyKey.getSalePropertyValueList();
+                    if (!CollectionUtils.isEmpty(salePropertyValueList)){
+                        salePropertyValueList.forEach((propertyValue -> {
+                            propertyValue.setSalePropertyKeyName(propertyKey.getSalePropertyKeyName());
+                            propertyValue.setProductId(productSpu.getId());
+                            productSalePropertyValues.add(propertyValue);
+                        }));
+                    }
+            });
         }
+
+
+
+//        for (ProductSalePropertyKey productSalePropertyKey : salePropertyKeyList) {
+//            productSalePropertyKey.setProductId(productSpu.getId());
+//            List<ProductSalePropertyValue> salePropertyValueList = productSalePropertyKey.getSalePropertyValueList();
+//            for (ProductSalePropertyValue productSalePropertyValue : salePropertyValueList) {
+//                productSalePropertyValue.setSalePropertyKeyName(productSalePropertyKey.getSalePropertyKeyName());
+//                productSalePropertyValue.setProductId(productSpu.getId());
+//                productSalePropertyValues.add(productSalePropertyValue);
+//            }
+//        }
         productSalePropertyValueService.saveBatch(productSalePropertyValues);
 
         productSalePropertyKeyService.saveBatch(salePropertyKeyList);
 
         List<ProductImage> productImageList = productSpu.getProductImageList();
-        for (ProductImage productImage : productImageList) {
-            productImage.setProductId(productSpu.getId());
+        if (!CollectionUtils.isEmpty(productImageList)){
+            productImageList.forEach((productImage ->
+                productImage.setProductId(productSpu.getId())
+            ));
         }
+//        for (ProductImage productImage : productImageList) {
+//            productImage.setProductId(productSpu.getId());
+//        }
         productImageService.saveBatch(productImageList);
     }
-
-
 
 }

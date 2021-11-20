@@ -17,7 +17,9 @@ public class FeignInterceptor implements RequestInterceptor {
             ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             if(requestAttributes!=null){
                 HttpServletRequest request = requestAttributes.getRequest();
+                System.out.println("拦截器的 userTempId是" + request.getHeader("userTempId"));
                 requestTemplate.header("userTempId", request.getHeader("userTempId"));
+                System.out.println("拦截器的 userId是" + request.getHeader("userId"));
                 requestTemplate.header("userId", request.getHeader("userId"));
             }
     }

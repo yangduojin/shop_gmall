@@ -2,7 +2,6 @@ package com.atguigu.controller;
 
 
 import com.atguigu.entity.BaseSaleProperty;
-import com.atguigu.mapper.BaseBrandMapper;
 import com.atguigu.result.RetVal;
 import com.atguigu.service.BaseSalePropertyService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -18,4 +18,6 @@ public interface PlatformPropertyKeyService extends IService<PlatformPropertyKey
     List<PlatformPropertyKey> getPlatformPropertyByCategoryId(Long category1Id, Long category2Id, Long category3Id);
 
     void savePlatformProperty(PlatformPropertyKey platformPropertyKey);
+
+    List<PlatformPropertyKey> getPlatformPropertyBySkuId(Long skuId);
 }

@@ -22,6 +22,4 @@ public class SearchParam {
     //分页信息
     private Integer pageNo = 1;
     private Integer pageSize = 3;
-
-
 }

@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021-10-29
  */
 @RestController
-@RequestMapping("/product-image")
+@RequestMapping("/product")
 public class ProductImageController {
+
+
+
+
 
 }
 

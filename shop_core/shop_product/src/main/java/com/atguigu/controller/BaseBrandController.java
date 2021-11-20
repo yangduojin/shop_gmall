@@ -2,17 +2,11 @@ package com.atguigu.controller;
 
 
 import com.atguigu.entity.BaseBrand;
-import com.atguigu.entity.BaseCategory2;
-import com.atguigu.entity.BaseSaleProperty;
 import com.atguigu.mapper.BaseBrandMapper;
-import com.atguigu.mapper.BaseSalePropertyMapper;
 import com.atguigu.result.RetVal;
 import com.atguigu.service.BaseBrandService;
-import com.atguigu.service.BaseSalePropertyService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.csource.common.MyException;
 import org.csource.fastdfs.ClientGlobal;
 import org.csource.fastdfs.StorageClient1;
 import org.csource.fastdfs.TrackerClient;
@@ -23,7 +17,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -73,6 +66,13 @@ public class BaseBrandController {
     public RetVal getBrand(@PathVariable Long id){
         BaseBrand baseBrand = baseBrandService.getById(id);
         return RetVal.ok(baseBrand);
+    }
+
+    // feign 调用返回BaseBrand
+    @GetMapping("getBrandById/{id}")
+    public BaseBrand getBrandById(@PathVariable Long id){
+        BaseBrand baseBrand = baseBrandService.getById(id);
+        return baseBrand;
     }
 
     @DeleteMapping("{id}")
